@@ -15,7 +15,7 @@ def get_easy_data(show=False):
     mu1 = [3,9]
     mu2 = [6,4]
     sig = 0.4
-    numPoints = 30
+    numPoints = 300
     cluster1 = sig*np.random.randn(numPoints ,2) + mu1
     cluster2 = sig*np.random.randn(numPoints ,2) + mu2
     
@@ -27,6 +27,11 @@ def get_easy_data(show=False):
     return cluster1, cluster2
 ##END get_easy_data
     
+
+def calc_distance(x,y):
+    ## make a separate function for extensibility
+    return np.sqrt(x**2 + y**2)
+##END calc_distance
     
 def k_means(data, k):
     '''
@@ -40,29 +45,32 @@ def k_means(data, k):
     else:
         dim = 1
     numPoints = data.shape[0]
-    #initial_indices = np.random.randint(0,k,size=numPoints)
-    initial_indices= np.zeros(numPoints,dtype='int')
-    initial_indices[numPoints//2:] += 1
     
-    
-    centers = np.zeros(k)
-    for i,index in enumerate(initial_indices):
-        centers[index] += data[i] ## does this work element-wise for a d-dim vector?
-    centers /= numPoints
-    print(centers)
-    
-    plt.plot(data)
-    #plt.hist(data,bins=40)
-    plt.show()
-    return 0;
     
     num_iter = 4
+    centers = np.zeros(k)
+    cluster_ids_perIter = np.zeros((num_iter, numPoints) )
+    
+    cluster_indices = np.random.randint(0,k,size=numPoints)
+    cluster_ids_perIter[0] = cluster_indices
     for i in range(num_iter):
         ## define clusters
-        for x in data:
-            ## calculate distance to each cluster
-            pass
-        ## 
+        for j,index in enumerate(cluster_indices):
+            centers[index] += data[j]
+        centers /= numPoints/k  # numPoints includes all clusters
+
+        tot_distance = 0
+        ## reassign each point to nearest cluster 
+        for j,x in enumerate(data):
+            distances = calc_distance(x,centers)
+            new_cluster_index = np.argmin(distances)
+            cluster_indices[j] = new_cluster_index
+            tot_distance += min(distances)
+        ## track progress
+        cluster_ids_perIter[i] = cluster_indices
+        print(tot_distance)
+    ##END iterations
+        
     return 0
 ##END k_means
 

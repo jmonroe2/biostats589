@@ -16,7 +16,7 @@ def get_easy_data(show=False):
     mu2 = [6,4]
     mu3 = [2,2]
     sig = 0.4
-    numPoints = 4
+    numPoints = 200 ## magic at 1,2,12, and 16 (checked to 20)
     cluster1 = sig*np.random.randn(numPoints ,2) + mu1
     cluster2 = sig*np.random.randn(numPoints ,2) + mu2
     cluster3 = sig*np.random.randn(numPoints ,2) + mu3
@@ -35,7 +35,7 @@ def calc_distance(xy_tuple,centers_list):
     ## make a separate function for extensibility
     dx = abs(centers_list[:, 0] - xy_tuple[0])
     dy = abs(centers_list[:, 1] - xy_tuple[1])    
-    #return np.sqrt( dx**2 + dy**2 )
+    return np.sqrt( dx**2 + dy**2 )
     return dx+dy    
 ##END calc_distance
     
@@ -53,13 +53,14 @@ def k_means(data, k):
     numPoints = data.shape[0]
     color_list = ["cyan","orange","purple"]
     
-    num_iter = 2
+    num_iter = 3
     centers = np.zeros((k,dim))
     cluster_counts = np.zeros(k)
     cluster_ids_fullList = np.zeros((num_iter+1, numPoints) ,dtype="int")    
     distance_fullList = np.zeros(num_iter+1)
     
     cluster_indices = np.random.randint(0,k,size=numPoints)
+    cluster_indices[0]=2    
     cluster_ids_fullList[0] = cluster_indices
 
     ## Initial calculations
@@ -69,7 +70,6 @@ def k_means(data, k):
         cluster_counts[index] += 1
     for k_index in range(k):
         centers[k_index] /= cluster_counts[k_index]
-    
     # figure
     fig = plt.figure()
     plt.title("Initial Assignment")
@@ -79,27 +79,27 @@ def k_means(data, k):
         tot_dist += min(calc_distance((0,0), centers))
     plt.scatter(centers[:, 0], centers[:, 1], marker='x',s=20,color='k')
     distance_fullList[0] = tot_dist
-
+    
     ## k-means assignment
     for i in range(1,num_iter+1):
-        ## define clusters
-        for j,index in enumerate(cluster_indices):
-            centers[index] += data[j]
-            cluster_counts[index] += 1
-        for k_index in range(k):
-            centers[k_index] /= cluster_counts[k_index]
-            
         ## reassign each point to nearest cluster 
         tot_distance = 0        
         #print(i, centers[0], centers[1])
         for j,(x,y) in enumerate(data):
             distances = calc_distance((x,y), centers)
-            #print(x,y, distances)
             new_cluster_index = np.argmin(distances)
             cluster_indices[j] = new_cluster_index
             tot_distance += min(distances)
         ##END data loop
-        
+            
+        ## define clusters
+        cluster_list = [ [] for j in range(k)]
+        for j,index in enumerate(cluster_indices):
+            cluster_list[index].append(data[j])
+        for j in range(k):
+            if len(cluster_list[j]): centers[j] = np.mean(cluster_list[j],axis=0)
+        #print str(i)+ "\t", centers
+        #print cluster_list[1]
         ## track progress
         distance_fullList[i] = tot_distance
         cluster_ids_fullList[i] = cluster_indices

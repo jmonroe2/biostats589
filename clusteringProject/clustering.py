@@ -131,6 +131,32 @@ def get_harder_data(show=False):
         
     return cluster1, cluster2, cluster3
 ##END get_harder_data  
+    
+
+def show_fun_data():
+    
+    ## circular arrangement of [n_gauss] Gaussians [rad] away
+    n_gauss = 10
+    rad = 5
+    n_pointsPer = 5
+    sig = 0.7
+    
+    xs = np.array([])
+    ys = np.array([])
+    
+    for theta in np.linspace(0,2*np.pi,n_gauss):
+        mu_x = rad*np.cos(theta)
+        mu_y = rad*np.sin(theta)
+        new_xs = sig* np.random.randn(n_pointsPer) + mu_x
+        new_ys = sig* np.random.randn(n_pointsPer) + mu_y
+        xs = np.append(xs,new_xs)
+        ys = np.append(ys,new_ys)
+    
+    plt.scatter(xs,ys,color='k',s=2)
+    plt.xlim(-6,6)
+    plt.ylim(-6,6)
+    plt.show()
+##END get_fun_data
 
 
 def calc_distance(xy_tuple,centers_list):
@@ -225,9 +251,10 @@ def k_means(data, k):
 def main():
     ## get data
     #c1,c2,c3 = get_easy_data(True)
-    c1,c2,c3 = get_hard_data(True)
+    #c1,c2,c3 = get_hard_data(True)
     #c1,c2,c3 = get_ellipse_data(True)
-    #c1,c2,c3 = get_harder_data(True)
+    c1,c2,c3 = get_harder_data(True)
+    ##show_fun_data(); 
     
     ## shuffle data
     xs = list(c1[:, 0]) + list(c2[:,0]) + list(c3[:,0])
@@ -235,7 +262,7 @@ def main():
     zipped = [(xs[i],ys[i]) for i in range(len(xs))]
     
     ## find clusters
-    #k_means(zipped, k=3)
+    k_means(zipped, k=3)
     
     ## make plots for soft k-means
     ts = np.linspace(0,2, 100)
@@ -249,7 +276,6 @@ def main():
     plt.legend()
     plt.ylabel("Membership")
     plt.xlabel("$X_2$ position")
-    
     
 ##END main()
 

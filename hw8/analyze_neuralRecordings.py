@@ -16,7 +16,7 @@ from scipy import cluster as clust
 
 
 
-def main():
+def test_stuff():
    read_dict = io.loadmat("bint_fishmovie32_100.mat")
    data = read_dict['bint']
    
@@ -68,6 +68,37 @@ def main():
        plt.ylabel("$\Sigma (x_i - c_i)^2$") 
        ## not sure what distortion means
    return 0;
+##END test_stuff
+   
+
+def show_allTraces():
+    read_dict = io.loadmat("bint_fishmovie32_100.mat")
+    data = read_dict['bint']
+    # data is 297 x 160 x 953
+    # corresponding to 297 iterations of 160 neurons for 953 time steps
+   
+    traceOut_iter = np.mean(data,axis=0) ## cells across time
+    #print(traceOut_iter.shape)
+    plt.figure()
+    plt.imshow(traceOut_iter)
+    plt.ylabel("Nuerons"); plt.xlabel("time")
+    
+    traceOut_time = np.mean(data,axis=2) ## cell firing across time
+    #print(traceOut_time.shape)
+    plt.figure()
+    plt.imshow(traceOut_time)
+    plt.ylabel("Iteration"); plt.xlabel("cell")
+    
+    traceOut_cells = np.mean(data,axis=1) ## movie activity 
+    #print(traceOut_cells.shape)
+    plt.figure()
+    plt.imshow(traceOut_cells)
+    plt.ylabel("iteration"); plt.xlabel("time")
+##END show_allTraces()
+    
+def main():
+    return 0;
+    show_allTraces()
 ##END main
     
 

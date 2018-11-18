@@ -1,0 +1,15 @@
+SEE: https://notepad.pw/vyiz4n91
+for up to date 
+
+1. what kind of neurons fire together?
+	√	block a region
+	measure correlation funciton of blocks
+	rank based on averaged correlation (ie poor man's k-means)
+	FFT of those --> matches?
+	histogram correlations
+	cluster correlations
+	cluster time bins 
+	do time-bin clusters match correlation time-bins?
+
+2. Do neurons fire consistenly?
+	Measure correlation function between movieiteration i and movie iteration j (matrix. 

@@ -14,6 +14,10 @@ import scipy
 from scipy import io
 from scipy import cluster as clust
 #plt.style.use('jtm_style')
+=======
+plt.style.use("default")
+
+>>>>>>> f3f0bcbd92e4ce1216f09409b6df384177033919
 
 
 def test_stuff(data):
@@ -138,12 +142,16 @@ def regional_fft(data):
     region_max = 325
     sliced = avg_over_runs[:, region_min:region_max]
     print(sliced.shape)
-    plt.figure()
-    plt.imshow(sliced)
 
+<<<<<<< HEAD
     plt.figure()
     for i,neuron in enumerate(sliced[:5]):
         plt.plot( neuron )
+=======
+    fig, ax_time = plt.subplots()
+    fig, ax_freq = plt.subplots()
+    
+>>>>>>> f3f0bcbd92e4ce1216f09409b6df384177033919
     plt.show()
 ##END regional_fft
 

@@ -22,13 +22,13 @@ def main():
     num_cells = 500
     
     v1,v2,v3 = np.random.randn(3,num_dim)
-    norm = np.dot(v1,v1)
+    norm = np.sqrt(np.dot(v1,v1))
     v1 /= norm
-    norm = np.dot(v2,v2)
+    norm = np.sqrt(np.dot(v2,v2))
     v2 /= norm
-    norm = np.dot(v3,v3)
+    norm = np.sqrt(np.dot(v3,v3))
     v3 /= norm
-    
+
     
     ### part b: check out their scalar products:
     if show_plots:

@@ -1,0 +1,26 @@
+1. what kind of neurons fire together?
+	V	block a region
+	V	measure correlation function of blocks
+	X	rank based on averaged correlation (ie poor man's k-means)
+	X	FFT of those --> matches?
+	V	histogram correlations
+	cluster correlations
+	cluster time bins 
+	do time-bin clusters match correlation time-bins?
+
+2. Do neurons fire consistenly?
+	Measure correlation function between movieiteration 1 and movie iteration n 
+
+4. Understanding the method: we'd like to know that we can get sensible answers out of our correlation function
+	Test data: [222111111, 111222111, 111111222] should peak at block of 3
+		avg=9-6
+		tau = 6
+	Does this method separate quiesscent periods from noisy regions?
+	
+	
+
+STATEMENTS
+	We assume that averaging over movie iterations effectively blends an issues with time-resolved spiking.
+
+
+Look at values of first 5 correlation functions
